@@ -5,16 +5,15 @@ BIN = battleship
 .PHONY: all
 
 OBJ = \
+	map.o \
 	main.o
 
-DOBJ = \
-	bld/main.o
+DOBJ = $(wildcard bld/*.o)
 
 all: test
 
-final:
-	$(CC) -O2
-	@echo "Not yet supported"
+final: $(OBJ)
+	$(CC) -O2 -o $(BIN) $(DOBJ) $(LIBS)
 
 %.o: src/%.cpp
 	$(CC) -c -o bld/$@ $< $(CFLAGS)
