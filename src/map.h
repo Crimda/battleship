@@ -15,7 +15,12 @@ class Map
 	public:
 		Map(int resX, int resY);
 		~Map();
-		bool set(Vec2 pos, State state);
+		bool setNode(Vec2 pos, State state);
+		bool setNode(int x, int y, State state);
+		State getNode(Vec2 pos);
+		State getNode(int x, int y);
+
+
 };
 
 

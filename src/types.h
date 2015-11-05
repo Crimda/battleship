@@ -10,9 +10,10 @@ typedef struct
 typedef enum
 {
 	STATE_EMPTY,
-	STATE_SHOT,
+	STATE_MISS,
 	STATE_HIT,
-	STATE_SHIP
+	STATE_SHIP,
+	STATE_NULL
 } State;
 
 #endif
