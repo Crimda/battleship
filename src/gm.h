@@ -25,11 +25,15 @@ class GameStateManager
 		Ship playerShips[5]; // Store ships
 		Ship enemyShips[5];  // yes
 
-		int playerShotX;
-		int playerShotY;
+		Vec2 playerTargetPos;
 
 		int playerShipsLeft = 5;
 		int enemyShipsLeft = 5;
+
+		/* Vars for ship placing */
+		Direction playerShipDirection;
+		Ship currentShip;
+
 	public:
 		GameStateManager();
 		~GameStateManager();

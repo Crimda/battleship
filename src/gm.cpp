@@ -44,7 +44,47 @@ void GameStateManager::update()
 }
 
 void GameStateManager::handleCommand(strVec commandList)
-{ 
+{
+	if (commandList.empty())
+		return;
+
+	if (commandList.size() == 1)
+	{ // Handle 0 arg commands
+		if (commandList[0] == "quit" || commandList[0] == "q" || commandList[0] == "sd")
+		{
+			gameOver = true;
+		}
+		else
+		{
+			playerTargetPos = util::parseCoords(commandList[0]);
+			if (playerTargetPos.x == -1 || playerTargetPos.y == -1)
+			{
+				print("Invalid coordinates!");
+				return;
+			}
+		}
+	} else
+	if (commandList.size() == 2)
+	{ // Handle single argument commands
+		if (commandList[1] == "north" || commandList[1] == "south" || commandList[1] == "east" || commandList[1] == "west")
+		{
+			playerTargetPos = util::parseCoords(commandList[0]);
+			if (playerTargetPos.x == -1 || playerTargetPos.y == -1)
+			{
+				print("Invalid coordinates!");
+				return;
+			}
+
+			if (commandList[1] == "north") playerShipDirection = DIR_NORTH; else
+			if (commandList[1] == "south") playerShipDirection = DIR_SOUTH; else
+			if (commandList[1] == "west")  playerShipDirection = DIR_WEST; else
+			if (commandList[1] == "east")  playerShipDirection = DIR_EAST;
+
+			return;
+		}
+	}
+	else
+		print("Invalid command!");
 }
 
 void GameStateManager::getInput()

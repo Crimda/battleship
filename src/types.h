@@ -33,5 +33,13 @@ typedef enum
 	SHIP_DESTROYER
 } ShipType;
 
+typedef enum
+{
+	DIR_NORTH,
+	DIR_SOUTH,
+	DIR_WEST,
+	DIR_EAST
+} Direction;
+
 #endif
 
