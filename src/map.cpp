@@ -1,5 +1,8 @@
 #include "map.h"
 
+Map::Map()
+{} // I hate this language
+
 Map::Map(int resX, int resY)
 { // Create a map of resX by resY
 	// Allocate space for the y axis

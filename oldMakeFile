@@ -6,6 +6,7 @@ BIN = battleship
 
 OBJ = \
 	map.o \
+	gm.o \
 	main.o
 
 DOBJ = $(wildcard bld/*.o)

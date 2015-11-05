@@ -9,11 +9,11 @@ typedef struct
 
 typedef enum
 {
-	STATE_EMPTY,
-	STATE_MISS,
-	STATE_HIT,
-	STATE_SHIP,
-	STATE_NULL
+	STATE_EMPTY, // No shots taken
+	STATE_MISS,  // A missed shot
+	STATE_HIT,   // A hit
+	STATE_SHIP,  // A ship
+	STATE_NULL   // An index into an out of bounds location in the map data :/
 } State;
 
 #endif
