@@ -30,6 +30,7 @@ class GameStateManager
 		void test();
 		void main();
 		void update();
+		void getInput();
 
 };
 

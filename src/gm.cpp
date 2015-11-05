@@ -36,6 +36,10 @@ void GameStateManager::update()
 	}
 }
 
+void GameStateManager::getInput()
+{
+}
+
 void GameStateManager::test()
 { // Sets 5,5 to be different states on all 3 maps, then confirms it is indeed that
 	playerShipMap.setNode(5,5, STATE_MISS);
