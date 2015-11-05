@@ -82,8 +82,11 @@ void GameStateManager::handleCommand(strVec commandList)
 
 			return;
 		}
+		else
+			goto invalidCommand;
 	}
 	else
+	invalidCommand:
 		print("Invalid command!");
 }
 
@@ -92,21 +95,10 @@ void GameStateManager::getInput()
 	std::string rawCommand;
 	std::getline(std::cin, rawCommand);
 
-	strVec commandList = util::parse(rawCommand);
-	handleCommand(commandList);
+	strVec commandList;
+	commandList = util::parse(rawCommand);
 
-	/*
-	if (statusMsgRedrawOverride)
-		return;
-	if (command == "test")
-	{
-		statusMsg = "SUCCESSFUL! \\o/";
-	} else
-	if (command == "quit" || command == "q" || command == "sd")
-	{
-		gameOver = true;
-	}
-	*/
+	handleCommand(commandList);
 }
 
 void GameStateManager::print(std::string msg)

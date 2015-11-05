@@ -3,8 +3,8 @@
 strVec util::parse(std::string raw)
 { // Use result.empty() to test if it was able to parse or not
 	strVec retVal;
-
 	std::string buffer;
+
 	for (int i = 0; i < raw.size(); i++)
 	{
 		if (raw[i] == ' ' || raw[i] == '\r' || raw[i] == '\n')
@@ -17,6 +17,7 @@ strVec util::parse(std::string raw)
 			buffer += raw[i];
 		}
 	}
+	retVal.push_back(buffer);
 	return retVal;
 }
 
