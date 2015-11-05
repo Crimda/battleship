@@ -16,11 +16,11 @@ void ui::draw(Map playerShipMap, Map playerShotMap)
 		'O',
 		'X',
 		'+',
-		' '
+		'?' // Something went terribly wrong
 	};
 
 	// Print legend
-	puts("x ABCDEFGHIJ | ABCDEFGHIJ");
+	puts("x  A B C D E F G H I J  |  A B C D E F G H I J");
 
 	std::string buffer;
 	for (int y = 0; y < playerShipMap.maxResY; y++)
@@ -32,6 +32,7 @@ void ui::draw(Map playerShipMap, Map playerShotMap)
 
 		for (int x = 0; x < playerShipMap.maxResX; x++)
 		{
+			putchar(' ');
 			switch (playerShipMap.getNode(x, y))
 			{
 				case STATE_EMPTY:
@@ -52,9 +53,10 @@ void ui::draw(Map playerShipMap, Map playerShotMap)
 			}
 		}
 		// Space over a bit
-		printf(" | ");
+		printf("  | ");
 		for (int x = 0; x < playerShotMap.maxResX; x++)
 		{
+			putchar(' ');
 			switch (playerShotMap.getNode(x, y))
 			{
 				case STATE_EMPTY:
