@@ -1,7 +1,7 @@
 #include "ui.h"
 
 // Allow for windows stupidry
-#ifdef _WIN32
+#ifdef WIN32
 	#define ENDLN "\r\n"
 #else
 	#define ENDLN "\n"
@@ -13,7 +13,7 @@ void clear()
 	// YES I KNOW THIS IS BAD OKAY WHAT OTHER CHOICE DO I HAVE!?
 	// DON'T JUDGE ME! IT'S 2015 AND THERE _STILL_ IS NO WAY TO
 	// DO A CROSS-PLATFORM CLEARING OF THE SCREEN FFS! T_T
-	#ifdef _WIN32
+	#ifdef WIN32
 	system("cls");
 	#else
 	system("clear");
