@@ -1,6 +1,7 @@
 #ifndef UI
 #define UI
 #include <string>
+#include <stdlib.h>
 
 #include "types.h"
 #include "map.h"
