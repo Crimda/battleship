@@ -5,6 +5,8 @@ BIN = battleship
 .PHONY: all
 
 OBJ = \
+	ui.o \
+	gameconf.o \
 	map.o \
 	gm.o \
 	main.o

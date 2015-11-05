@@ -1,15 +1,13 @@
 #ifndef UI
 #define UI
+#include <string>
 
 #include "types.h"
-class TUI
+#include "map.h"
+
+namespace ui
 {
-	/* Variables */
-	/* Functions */
-	public:
-		TUI();
-		~TUI();
-		void draw();
-};
+	void draw(Map playerShipMap, Map playerShotMap);
+}
 
 #endif

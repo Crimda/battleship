@@ -16,6 +16,8 @@ class GameStateManager
 		GameStateManager();
 		~GameStateManager();
 		void test();
+		void update();
+
 };
 
 #endif

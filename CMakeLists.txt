@@ -7,6 +7,7 @@ SET(CC "clang++")
 SET(CMAKE_CXX_FLAGS "-Wall --std=c++11")
 
 add_executable(battleship
+	"src/ui.cpp"
 	"src/gameconf.cpp"
 	"src/map.cpp"
 	"src/gm.cpp"
