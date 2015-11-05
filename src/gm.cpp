@@ -84,7 +84,7 @@ void GameStateManager::update()
 				if (playerShipDirection != DIR_NONE)
 				{
 					if (playerShipMap.addShip(playerTargetPos, playerShipDirection, SHIP_DESTROYER))
-						playerShipsLeft++;
+						turn = -1;
 				}
 				break;
 		}
