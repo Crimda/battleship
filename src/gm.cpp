@@ -89,6 +89,10 @@ void GameStateManager::update()
 				break;
 		}
 	}
+	if (turn == -1)
+	{
+		print("Computer placing ships, please wait...");
+	}
 
 	/* Reset state variables */
 	playerShipDirection = DIR_NONE;
