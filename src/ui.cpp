@@ -7,8 +7,22 @@
 	#define ENDLN "\n"
 #endif
 
-void ui::draw(Map playerShipMap, Map playerShotMap)
+
+void clear()
 {
+	// YES I KNOW THIS IS BAD OKAY WHAT OTHER CHOICE DO I HAVE!?
+	// DON'T JUDGE ME! T_T
+	#ifdef WINDOWS
+	system("cls");
+	#else
+	system("clear");
+	#endif
+}
+
+void ui::draw(Map playerShipMap, Map playerShotMap, std::string status)
+{
+	// Clear the screen
+	clear();
 	// Symbols for rendering the grid
 	char renderChars[] = 
 	{
@@ -20,9 +34,11 @@ void ui::draw(Map playerShipMap, Map playerShotMap)
 	};
 
 	// Print legend
-	puts("x  A B C D E F G H I J  |  A B C D E F G H I J");
+	printf("x  A B C D E F G H I J  |  A B C D E F G H I J");
 
-	std::string buffer;
+	// Print status
+	printf("  %s%s", status.c_str(), ENDLN);
+	
 	for (int y = 0; y < playerShipMap.maxResY; y++)
 	{
 		if (y < 9)
@@ -77,8 +93,10 @@ void ui::draw(Map playerShipMap, Map playerShotMap)
 			}
 		}
 
-		// Finally print a newline
+		// Finally print a few newline's
 		printf("%s", ENDLN);
 	}
+	puts("");
+	printf(">>> ");
 }
 

@@ -16,5 +16,14 @@ typedef enum
 	STATE_NULL   // An index into an out of bounds location in the map data :/
 } State;
 
+typedef enum
+{
+	SHIP_CARRIER,
+	SHIP_BATTLE,
+	SHIP_CRUISER,
+	SHIP_SUBMARINE,
+	SHIP_DESTROYER
+} ShipType;
+
 #endif
 

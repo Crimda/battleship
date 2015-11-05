@@ -7,7 +7,7 @@
 
 namespace ui
 {
-	void draw(Map playerShipMap, Map playerShotMap);
+	void draw(Map playerShipMap, Map playerShotMap, std::string status);
 }
 
 #endif

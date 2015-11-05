@@ -1,10 +1,11 @@
 CC = clang++
-CFLAGS = -Wall
+CFLAGS = -Wall -std=c++11
 
 BIN = battleship
 .PHONY: all
 
 OBJ = \
+	ship.o \
 	ui.o \
 	gameconf.o \
 	map.o \
