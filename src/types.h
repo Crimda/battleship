@@ -1,11 +1,19 @@
 #ifndef TYPES
 #define TYPES
 
-typedef struct
+#include <vector>
+#include <string>
+
+class Vec2
 {
-	int x;
-	int y;
-} Vec2;
+	public:
+		int x;
+		int y;
+		Vec2(int x, int y);
+		Vec2();
+};
+
+typedef std::vector<std::string> strVec;
 
 typedef enum
 {

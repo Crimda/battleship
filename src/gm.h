@@ -7,7 +7,7 @@
 #include "ship.h"
 #include "map.h"
 #include "ui.h"
-#include "gameconf.h"
+#include "util.h"
 
 class GameStateManager
 {
@@ -21,7 +21,6 @@ class GameStateManager
 
 		std::string statusMsg;
 		bool statusMsgRedrawOverride;
-		std::string command; // Stores player's entered command
 
 		Ship playerShips[5]; // Store ships
 		Ship enemyShips[5];  // yes
@@ -39,8 +38,9 @@ class GameStateManager
 		void update();
 		void getInput();
 
-		void parseCoords(std::string coords);
-		void parseCommand(std::string raw);
+		void print(std::string msg);
+
+		void handleCommand(strVec commandList);
 
 };
 
