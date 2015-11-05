@@ -15,6 +15,9 @@ class GameStateManager
 		Map playerShotMap; // Will be shown to the player
 
 		int turn = -2; // -2 == player ship placement, -1 == comp ship place, 0 == player, 1 == comp, 2 == over
+		bool gameOver = false;
+
+		std::string statusMsg;
 
 		Ship playerShips[5]; // Store ships
 		Ship enemyShips[5];   // yes
@@ -25,6 +28,7 @@ class GameStateManager
 		GameStateManager();
 		~GameStateManager();
 		void test();
+		void main();
 		void update();
 
 };

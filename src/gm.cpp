@@ -18,9 +18,22 @@ GameStateManager::~GameStateManager()
 {
 }
 
+void GameStateManager::main()
+{
+	while (!gameOver)
+	{
+		update();
+		ui::draw(playerShipMap, playerShotMap, statusMsg);
+		break; // DEBUG: Don't have code to change state yet
+	}
+}
+
 void GameStateManager::update()
 {
-	
+	if (turn == -2)
+	{
+		statusMsg = "Place your ships!";
+	}
 }
 
 void GameStateManager::test()
