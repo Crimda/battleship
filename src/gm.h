@@ -27,7 +27,7 @@ class GameStateManager
 
 		Vec2 playerTargetPos;
 
-		int playerShipsLeft = 5;
+		int playerShipsLeft = 0; // Set to zero as used for tracking during ship placement
 		int enemyShipsLeft = 5;
 
 		/* Vars for ship placing */
@@ -43,6 +43,7 @@ class GameStateManager
 		void getInput();
 
 		void print(std::string msg);
+		void error(std::string msg);
 
 		void handleCommand(strVec commandList);
 

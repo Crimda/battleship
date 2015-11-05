@@ -22,6 +22,8 @@ class Map
 		bool setNode(int x, int y, State state);
 		State getNode(Vec2 pos);
 		State getNode(int x, int y);
+		bool addShip(Vec2 pos, Direction dir, ShipType type);
+		bool addShip(int x, int y, Direction dir, ShipType type);
 
 
 };

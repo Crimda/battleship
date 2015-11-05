@@ -30,14 +30,70 @@ void GameStateManager::main()
 
 void GameStateManager::update()
 {
-	if (!statusMsgRedrawOverride)
+	if (turn == -2)
 	{
-		if (turn == -2)
+		switch (playerShipsLeft)
 		{
-			statusMsg = "Place your ships!";
+			case SHIP_CARRIER:
+				print("Place your carrier!");
+				if (playerShipDirection != DIR_NONE)
+				{
+					if (playerShipMap.addShip(playerTargetPos, playerShipDirection, SHIP_CARRIER))
+					{
+						playerShipsLeft++; // We placed the ship, go ahead and inc
+						print("Place your battleship!");
+					}
+
+				}
+				break;
+			case SHIP_BATTLE:
+				print("Place your battleship!");
+				if (playerShipDirection != DIR_NONE)
+				{
+					if (playerShipMap.addShip(playerTargetPos, playerShipDirection, SHIP_BATTLE))
+					{
+						playerShipsLeft++;
+						print("Place your cruiser!");
+					}
+				}
+				break;
+			case SHIP_CRUISER:
+				print("Place your cruiser!");
+				if (playerShipDirection != DIR_NONE)
+				{
+					if (playerShipMap.addShip(playerTargetPos, playerShipDirection, SHIP_CRUISER))
+					{
+						playerShipsLeft++;
+						print("Place your submarine!");
+					}
+				}
+				break;
+			case SHIP_SUBMARINE:
+				print("Place your submarine!");
+				if (playerShipDirection != DIR_NONE)
+				{
+					if (playerShipMap.addShip(playerTargetPos, playerShipDirection, SHIP_SUBMARINE))
+					{
+						playerShipsLeft++;
+						print("Place your destroyer!");
+					}
+				}
+				break;
+			case SHIP_DESTROYER:
+				print("Place your destroyer!");
+				if (playerShipDirection != DIR_NONE)
+				{
+					if (playerShipMap.addShip(playerTargetPos, playerShipDirection, SHIP_DESTROYER))
+						playerShipsLeft++;
+				}
+				break;
 		}
 	}
-	else
+
+	/* Reset state variables */
+	playerShipDirection = DIR_NONE;
+	playerTargetPos = Vec2(-1, -1);
+	if (statusMsgRedrawOverride)
 	{
 		statusMsgRedrawOverride = false;
 	}
@@ -59,7 +115,7 @@ void GameStateManager::handleCommand(strVec commandList)
 			playerTargetPos = util::parseCoords(commandList[0]);
 			if (playerTargetPos.x == -1 || playerTargetPos.y == -1)
 			{
-				print("Invalid coordinates!");
+				error("Invalid coordinates!");
 				return;
 			}
 		}
@@ -71,7 +127,7 @@ void GameStateManager::handleCommand(strVec commandList)
 			playerTargetPos = util::parseCoords(commandList[0]);
 			if (playerTargetPos.x == -1 || playerTargetPos.y == -1)
 			{
-				print("Invalid coordinates!");
+				error("Invalid coordinates!");
 				return;
 			}
 
@@ -87,7 +143,7 @@ void GameStateManager::handleCommand(strVec commandList)
 	}
 	else
 	invalidCommand:
-		print("Invalid command!");
+		error("Invalid command!");
 }
 
 void GameStateManager::getInput()
@@ -103,6 +159,11 @@ void GameStateManager::getInput()
 
 void GameStateManager::print(std::string msg)
 { // Helper to print info to the status bar
+	statusMsg = msg;
+}
+
+void GameStateManager::error(std::string msg)
+{
 	statusMsgRedrawOverride = true;
 	statusMsg = msg;
 }

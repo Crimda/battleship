@@ -35,7 +35,7 @@ Vec2 util::parseCoords(std::string raw)
 	{
 		if (raw[1] == '1' && raw[2] == '0')
 		{
-			retVal.y = 10;
+			retVal.y = 9;
 			goto getFirst;
 		}
 		else

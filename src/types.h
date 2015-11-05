@@ -11,6 +11,7 @@ class Vec2
 		int y;
 		Vec2(int x, int y);
 		Vec2();
+		bool inBounds();
 };
 
 typedef std::vector<std::string> strVec;
@@ -38,7 +39,8 @@ typedef enum
 	DIR_NORTH,
 	DIR_SOUTH,
 	DIR_WEST,
-	DIR_EAST
+	DIR_EAST,
+	DIR_NONE
 } Direction;
 
 #endif
