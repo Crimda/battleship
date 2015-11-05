@@ -24,20 +24,126 @@ void GameStateManager::main()
 	{
 		update();
 		ui::draw(playerShipMap, playerShotMap, statusMsg);
-		break; // DEBUG: Don't have code to change state yet
+		getInput();
 	}
 }
 
 void GameStateManager::update()
 {
-	if (turn == -2)
+	if (!statusMsgRedrawOverride)
 	{
-		statusMsg = "Place your ships!";
+		if (turn == -2)
+		{
+			statusMsg = "Place your ships!";
+		}
 	}
+	else
+	{
+		statusMsgRedrawOverride = false;
+	}
+}
+
+void GameStateManager::parseCoords(std::string coords)
+{
+	gameOver = true;
+	if (coords.size() <= 3 && coords.size() > 1)
+	{
+		if (coords.size() == 3)
+		{ // Handle a 10
+			if (coords[1] == '1' && coords[2] == '0')
+			{
+				playerShotY = 10;
+				return;
+			}
+			else
+			{
+				statusMsgRedrawOverride = true;
+				statusMsg = "Invalid shot position!";
+				return;
+			}
+		}
+		else
+		{
+			switch (coords[0])
+			{
+				case 'a': playerShotX = 0; break;
+				case 'b': playerShotX = 1; break;
+				case 'c': playerShotX = 2; break;
+				case 'd': playerShotX = 3; break;
+				case 'e': playerShotX = 4; break;
+				case 'f': playerShotX = 5; break;
+				case 'g': playerShotX = 6; break;
+				case 'h': playerShotX = 7; break;
+				case 'i': playerShotX = 8; break;
+				case 'j': playerShotX = 9; break;
+				default:
+					statusMsgRedrawOverride = true;
+					statusMsg = "Invalid Shot position!";
+					return;
+					break;
+			}
+
+			switch (coords[1])
+			{
+				case '1': playerShotY = 0; break;
+				case '2': playerShotY = 1; break;
+				case '3': playerShotY = 2; break;
+				case '4': playerShotY = 3; break;
+				case '5': playerShotY = 4; break;
+				case '6': playerShotY = 5; break;
+				case '7': playerShotY = 6; break;
+				case '8': playerShotY = 7; break;
+				case '9': playerShotY = 8; break;
+				default:
+					statusMsgRedrawOverride = true;
+					statusMsg = "Invalid shot position!";
+					break;
+					return;
+			}
+		}
+	}
+	else
+	{
+		statusMsgRedrawOverride = true;
+		statusMsg = "[ERR]: Invalid coords passed to coord parser!";
+	}
+}
+
+void GameStateManager::parseCommand(std::string raw)
+{ // TODO: Figure out why this isn't working or a better way to do it
+	std::string word;
+	for (int i = 0; i < raw.size(); i++)
+	{
+		if (raw[i] != ' ' || raw[i] != '\r' || raw[i] != '\n')
+		{
+			word += raw[i];
+		}
+		else
+		{
+			if (word.size() == 2)
+			{ // We probably have coords here, try to parse em!
+				parseCoords(word);
+				if (statusMsgRedrawOverride)
+					return; // We got an error! Pass it through!
+			}
+		}
+	}	
 }
 
 void GameStateManager::getInput()
 {
+	std::getline(std::cin, command);
+	parseCommand(command);
+	if (statusMsgRedrawOverride)
+		return;
+	if (command == "test")
+	{
+		statusMsg = "SUCCESSFUL! \\o/";
+	} else
+	if (command == "quit" || command == "q" || command == "sd")
+	{
+		gameOver = true;
+	}
 }
 
 void GameStateManager::test()

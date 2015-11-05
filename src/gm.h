@@ -1,5 +1,7 @@
 #ifndef GAMESTATEMANAGER
 #define GAMESTATEMANAGER
+#include <iostream>
+#include <string>
 
 #include "types.h"
 #include "ship.h"
@@ -18,9 +20,14 @@ class GameStateManager
 		bool gameOver = false;
 
 		std::string statusMsg;
+		bool statusMsgRedrawOverride;
+		std::string command; // Stores player's entered command
 
 		Ship playerShips[5]; // Store ships
-		Ship enemyShips[5];   // yes
+		Ship enemyShips[5];  // yes
+
+		int playerShotX;
+		int playerShotY;
 
 		int playerShipsLeft = 5;
 		int enemyShipsLeft = 5;
@@ -31,6 +38,9 @@ class GameStateManager
 		void main();
 		void update();
 		void getInput();
+
+		void parseCoords(std::string coords);
+		void parseCommand(std::string raw);
 
 };
 
