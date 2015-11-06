@@ -31,7 +31,8 @@ typedef enum
 	SHIP_BATTLE,
 	SHIP_CRUISER,
 	SHIP_SUBMARINE,
-	SHIP_DESTROYER
+	SHIP_DESTROYER,
+	SHIP_NULL
 } ShipType;
 
 typedef enum

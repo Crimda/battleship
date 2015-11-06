@@ -8,7 +8,7 @@
 #endif
 
 
-void clear()
+void ui::clear()
 {
 	// YES I KNOW THIS IS BAD OKAY WHAT OTHER CHOICE DO I HAVE!?
 	// DON'T JUDGE ME! IT'S 2015 AND THERE _STILL_ IS NO WAY TO

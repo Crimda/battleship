@@ -70,6 +70,7 @@ Ship Map::addShip(Vec2 pos, Direction dir, ShipType type)
 		case SHIP_CRUISER:   size = 2; break;
 		case SHIP_SUBMARINE: size = 2; break;
 		case SHIP_DESTROYER: size = 1; break;
+		case SHIP_NULL:      size = 500000; break;
 	}
 
 	Vec2 onBoardTest = Vec2(pos.x, pos.y);
@@ -122,6 +123,7 @@ Ship Map::addShip(Vec2 pos, Direction dir, ShipType type)
 		case SHIP_CRUISER:   retVal = Ship(3, SHIP_CRUISER);   break;
 		case SHIP_SUBMARINE: retVal = Ship(3, SHIP_SUBMARINE); break;
 		case SHIP_DESTROYER: retVal = Ship(2, SHIP_DESTROYER); break;
+		case SHIP_NULL: break;
 	}
 
 	switch(dir)

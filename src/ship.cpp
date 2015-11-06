@@ -14,7 +14,8 @@ Ship::~Ship()
 
 void Ship::hit()
 {
-	hp--;
+	if (hp > 0)
+		hp--;
 }
 
 bool Ship::isAlive()

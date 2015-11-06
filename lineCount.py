@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 # encoding: utf-8
-
 files = [
-	"lineCount.py",
-	"src/gameconf.cpp",
-	"src/gameconf.h",
 	"src/gm.cpp",
 	"src/gm.h",
 	"src/main.cpp",
@@ -12,11 +8,13 @@ files = [
 	"src/map.h",
 	"src/ship.cpp",
 	"src/ship.h",
+	"src/types.cpp",
 	"src/types.h",
 	"src/ui.cpp",
 	"src/ui.h",
-	"CMakeLists.txt",
-	"Makefile"
+	"src/util.cpp",
+	"src/util.h",
+	"lineCount.py"
 ]
 
 lineCount = 0

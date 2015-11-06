@@ -26,6 +26,18 @@ void GameStateManager::main()
 		ui::draw(playerShipMap, playerShotMap, statusMsg);
 		getInput();
 	}
+	if (enemyShipsLeft <= 0)
+	{
+		ui::clear();
+		puts("!!You Win!!");
+	}
+
+	if (playerShipsLeft <= 0)
+	{
+		ui::clear();
+		puts("!!You Lose!!");
+	}
+
 }
 
 void GameStateManager::update()
@@ -169,20 +181,82 @@ void GameStateManager::update()
 		print("Player's turn! Enter coords for attack or a command!");
 		if (playerTargetPos.inBounds())
 		{
+			// See if we already tried here
+			switch (playerShotMap.getNode(playerTargetPos))
+			{
+				case STATE_HIT:
+				case STATE_MISS:
+					print("Already attacked coords, try another!");
+					return;
+				default: break;
+			}
+
 			switch (enemyShipMap.getNode(playerTargetPos))
 			{
 				case STATE_EMPTY:
 					playerShotMap.setNode(playerTargetPos, STATE_MISS);
+					error("Missed!");
 					break;
 				case STATE_SHIP:
 					playerShotMap.setNode(playerTargetPos, STATE_HIT);
+					switch (getHitShip(ENEMY))
+					{
+						case SHIP_CARRIER:
+							enemyShips[SHIP_CARRIER].hit();
+							if (!enemyShips[SHIP_CARRIER].isAlive())
+							{
+								enemyShipsLeft--;
+								error("You sank the computer's carrier!");
+							}
+							break;
+						case SHIP_BATTLE:
+							enemyShips[SHIP_BATTLE].hit();
+							if (!enemyShips[SHIP_BATTLE].isAlive())
+							{
+								enemyShipsLeft--;
+								error("You sank the computer's battleship!");
+							}
+							break;
+						case SHIP_CRUISER:
+							enemyShips[SHIP_CRUISER].hit();
+							if (!enemyShips[SHIP_CRUISER].isAlive())
+							{
+								enemyShipsLeft--;
+								error("You sank the computer's cruiser!");
+							}
+							break;
+						case SHIP_SUBMARINE:
+							enemyShips[SHIP_SUBMARINE].hit();
+							if (!enemyShips[SHIP_SUBMARINE].isAlive())
+							{
+								enemyShipsLeft--;
+								error("You sank the computer's submarine!");
+							}
+							break;
+						case SHIP_DESTROYER:
+							enemyShips[SHIP_DESTROYER].hit();
+							if (!enemyShips[SHIP_DESTROYER].isAlive())
+							{
+								enemyShipsLeft--;
+								error("You sank the computer's destroyer!");
+							}
+							break;
+						default: error("Something went terribly wrong in the enemy ship hit code!"); break;
+					}
 					break;
 				default:
-					error("Something just went terribly wrong! gm.cpp:179");
+					error("Something just went terribly wrong! gm.cpp:192");
 					break;
 			}
 		}
 	}
+
+	if (turn >= 0)
+	{
+		if (playerShipsLeft <= 0 || enemyShipsLeft <= 0)
+			gameOver = true;
+	}
+
 
 	/* Reset state variables */
 	playerShipDirection = DIR_NONE;
@@ -242,13 +316,16 @@ void GameStateManager::handleCommand(strVec commandList)
 
 void GameStateManager::getInput()
 {
-	std::string rawCommand;
-	std::getline(std::cin, rawCommand);
+	if (!gameOver)
+	{
+		std::string rawCommand;
+		std::getline(std::cin, rawCommand);
 
-	strVec commandList;
-	commandList = util::parse(rawCommand);
+		strVec commandList;
+		commandList = util::parse(rawCommand);
 
-	handleCommand(commandList);
+		handleCommand(commandList);
+	}
 }
 
 void GameStateManager::print(std::string msg)
@@ -264,9 +341,9 @@ void GameStateManager::error(std::string msg)
 
 ShipType GameStateManager::getHitShip(Team team)
 {
-	if (team == PLAYER)
+	if (team == ENEMY)
 	{
-		for (int i = 0; i <= enemyShipsLeft; i++)
+		for (int i = 0; i <= 5; i++)
 		{
 			if (enemyShips[i].contains(playerTargetPos))
 			{
@@ -274,9 +351,9 @@ ShipType GameStateManager::getHitShip(Team team)
 			}
 		}
 	} else
-	if (team == ENEMY)
+	if (team == PLAYER)
 	{
-		for (int i = 0; i <= playerShipsLeft; i++)
+		for (int i = 0; i <= 5; i++)
 		{
 			if (playerShips[i].contains(enemyTargetPos))
 			{
@@ -284,7 +361,7 @@ ShipType GameStateManager::getHitShip(Team team)
 			}
 		}
 	}
-	return SHIP_DESTROYER; // This will never be reached as far as I know, so is just to kill a warning
+	return SHIP_NULL;
 }
 
 void GameStateManager::test()
