@@ -7,11 +7,11 @@ GameStateManager::GameStateManager()
 	playerShotMap = Map(10, 10);
 	
 	// Set up the ships
-	playerShips[SHIP_CARRIER]   = enemyShips[SHIP_CARRIER]   = Ship(5);
-	playerShips[SHIP_BATTLE]    = enemyShips[SHIP_BATTLE]    = Ship(4);
-	playerShips[SHIP_CRUISER]   = enemyShips[SHIP_CRUISER]   = Ship(3);
-	playerShips[SHIP_SUBMARINE] = enemyShips[SHIP_SUBMARINE] = Ship(3);
-	playerShips[SHIP_DESTROYER] = enemyShips[SHIP_DESTROYER] = Ship(2);
+	playerShips[SHIP_CARRIER]   = enemyShips[SHIP_CARRIER]   = Ship();
+	playerShips[SHIP_BATTLE]    = enemyShips[SHIP_BATTLE]    = Ship();
+	playerShips[SHIP_CRUISER]   = enemyShips[SHIP_CRUISER]   = Ship();
+	playerShips[SHIP_SUBMARINE] = enemyShips[SHIP_SUBMARINE] = Ship();
+	playerShips[SHIP_DESTROYER] = enemyShips[SHIP_DESTROYER] = Ship();
 }
 
 GameStateManager::~GameStateManager()
@@ -38,8 +38,10 @@ void GameStateManager::update()
 				print("Place your carrier!");
 				if (playerShipDirection != DIR_NONE)
 				{
-					if (playerShipMap.addShip(playerTargetPos, playerShipDirection, SHIP_CARRIER))
+					Ship ship = playerShipMap.addShip(playerTargetPos, playerShipDirection, SHIP_CARRIER);
+					if (ship.isValid())
 					{
+						playerShips[SHIP_CARRIER] = ship;
 						playerShipsLeft++; // We placed the ship, go ahead and inc
 						print("Place your battleship!");
 					}
@@ -50,8 +52,10 @@ void GameStateManager::update()
 				print("Place your battleship!");
 				if (playerShipDirection != DIR_NONE)
 				{
-					if (playerShipMap.addShip(playerTargetPos, playerShipDirection, SHIP_BATTLE))
+					Ship ship = playerShipMap.addShip(playerTargetPos, playerShipDirection, SHIP_BATTLE);
+					if (ship.isValid())
 					{
+						playerShips[SHIP_BATTLE] = ship;
 						playerShipsLeft++;
 						print("Place your cruiser!");
 					}
@@ -61,8 +65,10 @@ void GameStateManager::update()
 				print("Place your cruiser!");
 				if (playerShipDirection != DIR_NONE)
 				{
-					if (playerShipMap.addShip(playerTargetPos, playerShipDirection, SHIP_CRUISER))
+					Ship ship = playerShipMap.addShip(playerTargetPos, playerShipDirection, SHIP_CRUISER);
+					if (ship.isValid())
 					{
+						playerShips[SHIP_CRUISER] = ship;
 						playerShipsLeft++;
 						print("Place your submarine!");
 					}
@@ -72,8 +78,10 @@ void GameStateManager::update()
 				print("Place your submarine!");
 				if (playerShipDirection != DIR_NONE)
 				{
-					if (playerShipMap.addShip(playerTargetPos, playerShipDirection, SHIP_SUBMARINE))
+					Ship ship = playerShipMap.addShip(playerTargetPos, playerShipDirection, SHIP_SUBMARINE);
+					if (ship.isValid())
 					{
+						playerShips[SHIP_SUBMARINE] = ship;
 						playerShipsLeft++;
 						print("Place your destroyer!");
 					}
@@ -83,15 +91,97 @@ void GameStateManager::update()
 				print("Place your destroyer!");
 				if (playerShipDirection != DIR_NONE)
 				{
-					if (playerShipMap.addShip(playerTargetPos, playerShipDirection, SHIP_DESTROYER))
+					Ship ship = playerShipMap.addShip(playerTargetPos, playerShipDirection, SHIP_DESTROYER);
+					if (ship.isValid())
 						turn = -1;
+					// Reset targSpot
+					playerTargetPos = Vec2(-1, -1);
 				}
 				break;
 		}
 	}
+
 	if (turn == -1)
 	{
 		print("Computer placing ships, please wait...");
+		printf("Enemyships: %d\n", enemyShipsLeft);
+		for (int i = 0; i <= 5; i++)
+		{
+		switch (enemyShipsLeft)
+		{
+			case SHIP_CARRIER:
+			{
+				Ship ship = enemyShipMap.addShip(Vec2(9, 9), DIR_WEST, SHIP_CARRIER);
+				if (ship.isValid())
+				{
+					enemyShips[SHIP_CARRIER] = ship;
+					enemyShipsLeft++;
+				}
+				break;
+			}
+			case SHIP_BATTLE:
+			{
+				Ship ship = enemyShipMap.addShip(Vec2(9, 8), DIR_WEST, SHIP_BATTLE);
+				if (ship.isValid())
+				{
+					enemyShips[SHIP_BATTLE] = ship;
+					enemyShipsLeft++;
+				}
+				break;
+			}
+			case SHIP_CRUISER:
+			{
+				Ship ship = enemyShipMap.addShip(Vec2(9, 7), DIR_WEST, SHIP_CRUISER);
+				if (ship.isValid())
+				{
+					enemyShips[SHIP_CRUISER] = ship;
+					enemyShipsLeft++;
+				}
+				break;
+			}
+			case SHIP_SUBMARINE:
+			{
+				Ship ship = enemyShipMap.addShip(Vec2(9, 6), DIR_WEST, SHIP_SUBMARINE);
+				if (ship.isValid())
+				{
+					enemyShips[SHIP_SUBMARINE] = ship;
+					enemyShipsLeft++;
+				}
+				break;
+			}
+			case SHIP_DESTROYER:
+			{
+				Ship ship = enemyShipMap.addShip(Vec2(9, 5), DIR_WEST, SHIP_DESTROYER);
+				if (ship.isValid())
+				{
+					enemyShips[SHIP_DESTROYER] = ship;
+					enemyShipsLeft++;
+					turn = 0;
+				}
+				break;
+			}
+		}
+		}
+	}
+
+	if (turn == 0)
+	{
+		print("Player's turn! Enter coords for attack or a command!");
+		if (playerTargetPos.inBounds())
+		{
+			switch (enemyShipMap.getNode(playerTargetPos))
+			{
+				case STATE_EMPTY:
+					playerShotMap.setNode(playerTargetPos, STATE_MISS);
+					break;
+				case STATE_SHIP:
+					playerShotMap.setNode(playerTargetPos, STATE_HIT);
+					break;
+				default:
+					error("Something just went terribly wrong! gm.cpp:179");
+					break;
+			}
+		}
 	}
 
 	/* Reset state variables */
@@ -170,6 +260,31 @@ void GameStateManager::error(std::string msg)
 {
 	statusMsgRedrawOverride = true;
 	statusMsg = msg;
+}
+
+ShipType GameStateManager::getHitShip(Team team)
+{
+	if (team == PLAYER)
+	{
+		for (int i = 0; i <= enemyShipsLeft; i++)
+		{
+			if (enemyShips[i].contains(playerTargetPos))
+			{
+				return enemyShips[i].type;
+			}
+		}
+	} else
+	if (team == ENEMY)
+	{
+		for (int i = 0; i <= playerShipsLeft; i++)
+		{
+			if (playerShips[i].contains(enemyTargetPos))
+			{
+				return playerShips[i].type;
+			}
+		}
+	}
+	return SHIP_DESTROYER; // This will never be reached as far as I know, so is just to kill a warning
 }
 
 void GameStateManager::test()

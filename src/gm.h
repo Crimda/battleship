@@ -26,9 +26,10 @@ class GameStateManager
 		Ship enemyShips[5];  // yes
 
 		Vec2 playerTargetPos;
+		Vec2 enemyTargetPos;
 
 		int playerShipsLeft = 0; // Set to zero as used for tracking during ship placement
-		int enemyShipsLeft = 5;
+		int enemyShipsLeft = 0;  // Set to zero for same reason
 
 		/* Vars for ship placing */
 		Direction playerShipDirection;
@@ -46,7 +47,7 @@ class GameStateManager
 		void error(std::string msg);
 
 		void handleCommand(strVec commandList);
-
+		ShipType getHitShip(Team team);
 };
 
 #endif

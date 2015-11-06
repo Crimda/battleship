@@ -56,11 +56,11 @@ State Map::getNode(int x, int y)
 	return mapdata[y][x];
 }
 
-bool Map::addShip(Vec2 pos, Direction dir, ShipType type)
+Ship Map::addShip(Vec2 pos, Direction dir, ShipType type)
 { // Return true if ship is placable, and update data, false if not
 	/* Are we even on the damn board? */
 	if (!pos.inBounds())
-		return false;
+		return Ship();
 
 	int size;
 	switch (type)
@@ -79,12 +79,12 @@ bool Map::addShip(Vec2 pos, Direction dir, ShipType type)
 		case DIR_SOUTH: onBoardTest.y += size; break;
 		case DIR_WEST:  onBoardTest.x -= size; break;
 		case DIR_EAST:  onBoardTest.x += size; break;
-		case DIR_NONE:  return false; break;
+		case DIR_NONE:  return Ship(); break;
 	}
 
 	/* Will we still be on the board once placed? */
 	if (!onBoardTest.inBounds())
-		return false;
+		return Ship();
 
 	/* Is there a ship in the way? */
 	switch(dir)
@@ -92,52 +92,75 @@ bool Map::addShip(Vec2 pos, Direction dir, ShipType type)
 		case DIR_NORTH:
 			for (int y = pos.y; y >= pos.y - size; y--)
 				if (getNode(pos.x, y) == STATE_SHIP)
-					return false;
+					return Ship();
 			break;
 		case DIR_SOUTH:
 			for (int y = pos.y; y <= pos.y + size; y++)
 				if (getNode(pos.x, y) == STATE_SHIP)
-					return false;
+					return Ship();
 			break;
 		case DIR_WEST:
 			for (int x = pos.x; x >= pos.x - size; x--)
 				if (getNode(x, pos.y) == STATE_SHIP)
-					return false;
+					return Ship();
 			break;
 		case DIR_EAST:
 			for (int x = pos.x; x <= pos.x + size; x++)
 				if (getNode(x, pos.y) == STATE_SHIP)
-					return false;
+					return Ship();
 			break;
-		case DIR_NONE: return false; break;
+		case DIR_NONE: return Ship(); break;
 	}
 
 	/* Okay, we can actually add the damn ship now \o/ */
+
+	Ship retVal = Ship();
+	switch (type)
+	{
+		case SHIP_CARRIER:   retVal = Ship(5, SHIP_CARRIER);   break;
+		case SHIP_BATTLE:    retVal = Ship(4, SHIP_BATTLE);    break;
+		case SHIP_CRUISER:   retVal = Ship(3, SHIP_CRUISER);   break;
+		case SHIP_SUBMARINE: retVal = Ship(3, SHIP_SUBMARINE); break;
+		case SHIP_DESTROYER: retVal = Ship(2, SHIP_DESTROYER); break;
+	}
+
 	switch(dir)
 	{
 		case DIR_NORTH:
 			for (int y = pos.y; y >= pos.y - size; y--)
+			{
 				setNode(pos.x, y, STATE_SHIP);
+				retVal.positions.push_back(Vec2(pos.x, y));
+			}
 			break;
 		case DIR_SOUTH:
 			for (int y = pos.y; y <= pos.y + size; y++)
+			{
 				setNode(pos.x, y, STATE_SHIP);
+				retVal.positions.push_back(Vec2(pos.x, y));
+			}
 			break;
 		case DIR_WEST:
 			for (int x = pos.x; x >= pos.x - size; x--)
+			{
 				setNode(x, pos.y, STATE_SHIP);
+				retVal.positions.push_back(Vec2(x, pos.y));
+			}
 			break;
 		case DIR_EAST:
 			for (int x = pos.x; x <= pos.x + size; x++)
+			{
 				setNode(x, pos.y, STATE_SHIP);
+				retVal.positions.push_back(Vec2(x, pos.y));
+			}
 			break;
-		case DIR_NONE: return false; break;
+		case DIR_NONE: return Ship(); break;
 	}
 
-	return true;
+	return retVal;
 }
 
-bool Map::addShip(int x, int y, Direction dir, ShipType type)
+Ship Map::addShip(int x, int y, Direction dir, ShipType type)
 { // Fuck you do it right
 	return addShip(Vec2(x, y), dir, type);
 }

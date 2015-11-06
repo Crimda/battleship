@@ -43,5 +43,11 @@ typedef enum
 	DIR_NONE
 } Direction;
 
+typedef enum
+{
+	PLAYER,
+	ENEMY
+} Team;
+
 #endif
 

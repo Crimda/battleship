@@ -3,9 +3,10 @@
 Ship::Ship()
 {}
 
-Ship::Ship(int size)
+Ship::Ship(int size, ShipType name)
 {
 	hp = size;
+	type = name;
 }
 
 Ship::~Ship()
@@ -22,5 +23,21 @@ bool Ship::isAlive()
 		return false;
 
 	return true;
+}
+
+bool Ship::contains(Vec2 pos)
+{
+	for (int i = 0; i < positions.size(); i++)
+		if (positions[i].x == pos.x && positions[i].y == pos.y)
+			return true;
+	return false;
+}
+
+bool Ship::isValid()
+{
+	if (positions.size() > 0)
+		return true;
+	
+	return false;
 }
 
