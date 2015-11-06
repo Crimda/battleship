@@ -290,7 +290,8 @@ void GameStateManager::handleCommand(strVec commandList)
 	} else
 	if (commandList.size() == 2)
 	{ // Handle single argument commands
-		if (commandList[1] == "north" || commandList[1] == "south" || commandList[1] == "east" || commandList[1] == "west")
+		if (commandList[1] == "north" || commandList[1] == "south" || commandList[1] == "east" || commandList[1] == "west" ||
+				commandList[1] == "n" || commandList[1] == "s" || commandList[1] == "e" || commandList[1] == "w")
 		{
 			playerTargetPos = util::parseCoords(commandList[0]);
 			if (playerTargetPos.x == -1 || playerTargetPos.y == -1)
@@ -299,10 +300,10 @@ void GameStateManager::handleCommand(strVec commandList)
 				return;
 			}
 
-			if (commandList[1] == "north") playerShipDirection = DIR_NORTH; else
-			if (commandList[1] == "south") playerShipDirection = DIR_SOUTH; else
-			if (commandList[1] == "west")  playerShipDirection = DIR_WEST; else
-			if (commandList[1] == "east")  playerShipDirection = DIR_EAST;
+			if (commandList[1] == "north" || commandList[1] == "n") playerShipDirection = DIR_NORTH; else
+			if (commandList[1] == "south" || commandList[1] == "s") playerShipDirection = DIR_SOUTH; else
+			if (commandList[1] == "west"  || commandList[1] == "w")  playerShipDirection = DIR_WEST; else
+			if (commandList[1] == "east"  || commandList[1] == "e")  playerShipDirection = DIR_EAST;
 
 			return;
 		}
