@@ -35,10 +35,9 @@ void ui::draw(Map playerShipMap, Map playerShotMap, std::string status)
 	};
 
 	// Print legend
-	printf("x  A B C D E F G H I J  |  A B C D E F G H I J");
+	printf("x  A B C D E F G H I J  |  A B C D E F G H I J  x");
 
-	// Print status
-	printf("  %s%s", status.c_str(), ENDLN);
+	printf("%s", ENDLN);
 	
 	for (int y = 0; y < playerShipMap.maxResY; y++)
 	{
@@ -70,7 +69,14 @@ void ui::draw(Map playerShipMap, Map playerShotMap, std::string status)
 			}
 		}
 		// Space over a bit
-		printf("  | ");
+		//printf("  | ");
+
+		if (y < 9)
+			printf("  %d ", y + 1);
+		else
+			printf(" %d ", y + 1);
+
+
 		for (int x = 0; x < playerShotMap.maxResX; x++)
 		{
 			putchar(' ');
@@ -93,10 +99,20 @@ void ui::draw(Map playerShipMap, Map playerShotMap, std::string status)
 					break;
 			}
 		}
+		
+		if (y < 9)
+			printf("  %d", y + 1);
+		else
+			printf(" %d", y + 1);
 
 		// Finally print a few newline's
 		printf("%s", ENDLN);
 	}
+	puts("x  A B C D E F G H I J  |  A B C D E F G H I J  x");
+	puts("=================================================");
+	// Print status
+	printf("%s%s", status.c_str(), ENDLN);
+
 	puts("");
 	printf(">>> ");
 }
