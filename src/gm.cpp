@@ -248,7 +248,7 @@ void GameStateManager::update()
 					}
 					break;
 				default:
-					error("Something just went terribly wrong! gm.cpp:192");
+					error("Something just went terribly wrong! gm.cpp:251");
 					break;
 			}
 		}
@@ -257,7 +257,67 @@ void GameStateManager::update()
 
 	if (turn == 1)
 	{
-		enemyAI.process(game);
+		game.enemyTargetPos = enemyAI.process(game);
+		switch(game.playerShipMap.getNode(game.enemyTargetPos))
+		{
+			case STATE_EMPTY:
+				game.playerShipMap.setNode(game.enemyTargetPos, STATE_MISS);
+				game.enemyLastShotHit = false;
+				error("Computer Missed!");
+				break;
+			case STATE_SHIP:
+				game.playerShipMap.setNode(game.enemyTargetPos, STATE_HIT);
+				switch (getHitShip(PLAYER))
+				{
+					case SHIP_CARRIER:
+						game.playerShips[SHIP_CARRIER].hit();
+						if (!game.playerShips[SHIP_CARRIER].isAlive())
+						{
+							game.playerShipsLeft--;
+							error("Computer sank your carrier!");
+						}
+						break;
+					case SHIP_BATTLE:
+						game.playerShips[SHIP_BATTLE].hit();
+						if (!game.playerShips[SHIP_BATTLE].isAlive())
+						{
+							game.playerShipsLeft--;
+							error("Computer sank your battleship!");
+						}
+						break;
+					case SHIP_CRUISER:
+						game.playerShips[SHIP_CRUISER].hit();
+						if (!game.playerShips[SHIP_CRUISER].isAlive())
+						{
+							game.playerShipsLeft--;
+							error("Computer sank your cruiser!");
+						}
+						break;
+					case SHIP_SUBMARINE:
+						game.playerShips[SHIP_SUBMARINE].hit();
+						if (!game.playerShips[SHIP_SUBMARINE].isAlive())
+						{
+							game.playerShipsLeft--;
+							error("Computer sank your submarine!");
+						}
+						break;
+					case SHIP_DESTROYER:
+						game.playerShips[SHIP_DESTROYER].hit();
+						if (!game.playerShips[SHIP_DESTROYER].isAlive())
+						{
+							game.playerShipsLeft--;
+							error("Computer sank your destroyer!");
+						}
+						break;
+					default: error("Something went terribly wrong in the player ship hit code!"); break;
+
+				}
+				break;
+			default:
+				error("Something just went terribly wrong! gm.cpp:317");
+				printf("%d!\n", game.playerShipMap.getNode(game.enemyTargetPos));
+				break;
+		}
 		turn = 0;
 	}
 

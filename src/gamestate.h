@@ -16,6 +16,7 @@ struct GameState
 	Map enemyShotMap;  // Store computer's shots for later analysis
 	Ship enemyShips[5];  // Storage for computer's ship entities
 	Vec2 enemyTargetPos; // Track computer's coordinate choice
+	bool enemyLastShotHit; // Track if the computer scored a hit (for AI shot determination)
 
 	int playerShipsLeft = 0; // Set to zero as used for tracking during ship placement
 	int enemyShipsLeft = 0;  // Set to zero for same reason

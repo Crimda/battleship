@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <string>
+#include <stdlib.h>
+#include <time.h>
 
 class Vec2
 {
@@ -11,6 +13,8 @@ class Vec2
 		int y;
 		Vec2(int x, int y);
 		Vec2();
+		void randomize();
+		void reseed();
 		bool inBounds();
 };
 

@@ -14,5 +14,16 @@ bool Vec2::inBounds()
 	return false;
 }
 
+void Vec2::reseed()
+{
+	srand(time(NULL));
+}
+
+void Vec2::randomize()
+{
+	x = rand() % 10;
+	y = rand() % 10;
+}
+
 Vec2::Vec2()
 {}

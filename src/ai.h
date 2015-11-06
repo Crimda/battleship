@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+
 #include "types.h"
 #include "map.h"
 #include "ship.h"
@@ -20,7 +21,7 @@ class SimpleAI
 {
 	private:
 		std::vector<Vec2> shotHistory; // Store past shots for future reference
-		AIState logicState; // Used for statemachine control
+		AIState logicState = LOGIC_SEARCH; // Used for statemachine control
 	/* Functions */
 	private:
 		Vec2 search(GameState state);
