@@ -108,6 +108,7 @@ void ui::draw(Map playerShipMap, Map playerShotMap, std::string status)
 		// Finally print a few newline's
 		printf("%s", ENDLN);
 	}
+	puts("");
 	puts("x  A B C D E F G H I J  |  A B C D E F G H I J  x");
 	puts("=================================================");
 	// Print status
