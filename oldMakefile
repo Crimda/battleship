@@ -10,6 +10,7 @@ OBJ = \
 	ui.o \
 	util.o \
 	map.o \
+	ai.o \
 	gm.o \
 	main.o
 

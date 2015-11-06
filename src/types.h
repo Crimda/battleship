@@ -50,5 +50,12 @@ typedef enum
 	ENEMY
 } Team;
 
+typedef enum
+{
+	END_QUIT,
+	END_WIN,
+	END_LOSE
+} EndCondition;
+
 #endif
 

@@ -12,6 +12,7 @@ add_executable(battleship
 	"src/ui.cpp"
 	"src/util.cpp"
 	"src/map.cpp"
+	"src/ai.cpp"
 	"src/gm.cpp"
 	"src/main.cpp"
 )

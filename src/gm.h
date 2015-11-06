@@ -8,32 +8,36 @@
 #include "map.h"
 #include "ui.h"
 #include "util.h"
+#include "ai.h"
+#include "gamestate.h"
 
 class GameStateManager
 {
 	private:
-		Map playerShipMap; // Will track enemy shots too
-		Map enemyShipMap;  // Will not be drawn
-		Map playerShotMap; // Will be shown to the player
+		// Used to manage game state
+		GameState game;
+		/*
+		 * -2: Player ship placement
+		 * -1: Computer ship placement
+		 *  0: Player's turn
+		 *  1: Computer's turn
+		*/
+		int turn = -2;
 
-		int turn = -2; // -2 == player ship placement, -1 == comp ship place, 0 == player, 1 == comp, 2 == over
-		bool gameOver = false;
+		// Used for shutting the game off and displaying end-game messages
+		EndCondition gameEndType = END_QUIT;
+		bool endGame = false;
 
+		// Used for the status bar
 		std::string statusMsg;
 		bool statusMsgRedrawOverride;
-
-		Ship playerShips[5]; // Store ships
-		Ship enemyShips[5];  // yes
-
-		Vec2 playerTargetPos;
-		Vec2 enemyTargetPos;
-
-		int playerShipsLeft = 0; // Set to zero as used for tracking during ship placement
-		int enemyShipsLeft = 0;  // Set to zero for same reason
 
 		/* Vars for ship placing */
 		Direction playerShipDirection;
 		Ship currentShip;
+
+		/* Instantiate the AI */
+		SimpleAI enemyAI = SimpleAI();
 
 	public:
 		GameStateManager();
