@@ -32,8 +32,6 @@ Vec2 SimpleAI::search(GameState state)
 			choice.randomize();
 		}
 	}
-
-	printf("Targeting: %d, %d\n", choice.x, choice.y);
 	return choice;
 }
 

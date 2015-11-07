@@ -6,7 +6,7 @@
 #include <chrono>
 #include <thread>
 
-#define DELAY 2500 // 1.5 seconds iirc
+#define DELAY 1500 // 1.5 seconds iirc
 
 #include "types.h"
 #include "map.h"
