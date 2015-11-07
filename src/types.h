@@ -61,5 +61,13 @@ typedef enum
 	END_LOSE
 } EndCondition;
 
+typedef enum
+{
+	TURN_PLAYERSTART,
+	TURN_COMPUTERSTART,
+	TURN_PLAYER,
+	TURN_COMPUTER
+} Turn;
+
 #endif
 

@@ -23,7 +23,7 @@ void GameStateManager::main()
 	while (!endGame)
 	{
 		update();
-		ui::draw(game.playerShipMap, game.playerShotMap, statusMsg);
+		ui::promptWithMap(game);
 		getInput();
 	}
 	
@@ -45,26 +45,26 @@ void GameStateManager::main()
 
 void GameStateManager::update()
 {
-	if (turn == -2)
-	{
+	if (turn == TURN_PLAYERSTART)
+ 	{
 		switch (game.playerShipsLeft)
-		{
+ 	 	{ 
 			case SHIP_CARRIER:
-				print("Place your carrier!");
+				ui::promptWithMap(game, "Place your carrier!");
 				if (playerShipDirection != DIR_NONE)
-				{
+		 		{
 					Ship ship = game.playerShipMap.addShip(game.playerTargetPos, playerShipDirection, SHIP_CARRIER);
 					if (ship.isValid())
 					{
 						game.playerShips[SHIP_CARRIER] = ship;
 						game.playerShipsLeft++; // We placed the ship, go ahead and inc
-						print("Place your battleship!");
+						ui::promptWithMap(game, "Place your battleship!");
 					}
 
 				}
 				break;
 			case SHIP_BATTLE:
-				print("Place your battleship!");
+				ui::promptWithMap(game, "Place your battleship!");
 				if (playerShipDirection != DIR_NONE)
 				{
 					Ship ship = game.playerShipMap.addShip(game.playerTargetPos, playerShipDirection, SHIP_BATTLE);
@@ -72,12 +72,12 @@ void GameStateManager::update()
 					{
 						game.playerShips[SHIP_BATTLE] = ship;
 						game.playerShipsLeft++;
-						print("Place your cruiser!");
+						ui::promptWithMap(game, "Place your cruiser!");
 					}
 				}
 				break;
 			case SHIP_CRUISER:
-				print("Place your cruiser!");
+				ui::promptWithMap(game, "Place your cruiser!");
 				if (playerShipDirection != DIR_NONE)
 				{
 					Ship ship = game.playerShipMap.addShip(game.playerTargetPos, playerShipDirection, SHIP_CRUISER);
@@ -85,12 +85,12 @@ void GameStateManager::update()
 					{
 						game.playerShips[SHIP_CRUISER] = ship;
 						game.playerShipsLeft++;
-						print("Place your submarine!");
+						ui::promptWithMap(game, "Place your submarine!");
 					}
 				}
 				break;
 			case SHIP_SUBMARINE:
-				print("Place your submarine!");
+				ui::promptWithMap(game, "Place your submarine!");
 				if (playerShipDirection != DIR_NONE)
 				{
 					Ship ship = game.playerShipMap.addShip(game.playerTargetPos, playerShipDirection, SHIP_SUBMARINE);
@@ -98,17 +98,17 @@ void GameStateManager::update()
 					{
 						game.playerShips[SHIP_SUBMARINE] = ship;
 						game.playerShipsLeft++;
-						print("Place your destroyer!");
+						ui::promptWithMap(game, "Place your destroyer!");
 					}
 				}
 				break;
 			case SHIP_DESTROYER:
-				print("Place your destroyer!");
+				ui::promptWithMap(game, "Place your destroyer!");
 				if (playerShipDirection != DIR_NONE)
 				{
 					Ship ship = game.playerShipMap.addShip(game.playerTargetPos, playerShipDirection, SHIP_DESTROYER);
 					if (ship.isValid())
-						turn = -1;
+						turn = TURN_COMPUTERSTART;
 					// Reset targSpot
 					game.playerTargetPos = Vec2(-1, -1);
 				}
@@ -116,10 +116,9 @@ void GameStateManager::update()
 		}
 	}
 
-	if (turn == -1)
+	if (turn == TURN_COMPUTERSTART)
 	{
-		print("Computer placing ships, please wait...");
-		printf("Enemyships: %d\n", game.enemyShipsLeft);
+		ui::printWithMap(game, "Computer placing ships, please wait...");
 		for (int i = 0; i <= 5; i++)
 		{
 		switch (game.enemyShipsLeft)
@@ -171,7 +170,7 @@ void GameStateManager::update()
 				{
 					game.enemyShips[SHIP_DESTROYER] = ship;
 					game.enemyShipsLeft++;
-					turn = 0;
+					turn = TURN_PLAYER;
 				}
 				break;
 			}
@@ -179,9 +178,9 @@ void GameStateManager::update()
 		}
 	}
 
-	if (turn == 0)
+	if (turn == TURN_PLAYER)
 	{
-		print("Player's turn! Enter coords for attack or a command!");
+		ui::promptWithMap(game, "Player's turn! Enter coords for attack or a command!");
 		if (game.playerTargetPos.inBounds())
 		{
 			// See if we already tried here
@@ -189,7 +188,7 @@ void GameStateManager::update()
 			{
 				case STATE_HIT:
 				case STATE_MISS:
-					print("Already attacked coords, try another!");
+					ui::dprintWithMap(game, "Already attacked coords, try another!");
 					return;
 				default: break;
 			}
@@ -198,10 +197,11 @@ void GameStateManager::update()
 			{
 				case STATE_EMPTY:
 					game.playerShotMap.setNode(game.playerTargetPos, STATE_MISS);
-					error("Missed!");
+					ui::dprintWithMap(game, "Missed!");
 					break;
 				case STATE_SHIP:
 					game.playerShotMap.setNode(game.playerTargetPos, STATE_HIT);
+					ui::dprintWithMap(game, "Hit!");
 					switch (getHitShip(ENEMY))
 					{
 						case SHIP_CARRIER:
@@ -209,7 +209,7 @@ void GameStateManager::update()
 							if (!game.enemyShips[SHIP_CARRIER].isAlive())
 							{
 								game.enemyShipsLeft--;
-								error("You sank the computer's carrier!");
+								ui::dprintWithMap(game, "You sank the computer's carrier!");
 							}
 							break;
 						case SHIP_BATTLE:
@@ -217,7 +217,7 @@ void GameStateManager::update()
 							if (!game.enemyShips[SHIP_BATTLE].isAlive())
 							{
 								game.enemyShipsLeft--;
-								error("You sank the computer's battleship!");
+								ui::dprintWithMap(game, "You sank the computer's battleship!");
 							}
 							break;
 						case SHIP_CRUISER:
@@ -225,7 +225,7 @@ void GameStateManager::update()
 							if (!game.enemyShips[SHIP_CRUISER].isAlive())
 							{
 								game.enemyShipsLeft--;
-								error("You sank the computer's cruiser!");
+								ui::dprintWithMap(game, "You sank the computer's cruiser!");
 							}
 							break;
 						case SHIP_SUBMARINE:
@@ -233,7 +233,7 @@ void GameStateManager::update()
 							if (!game.enemyShips[SHIP_SUBMARINE].isAlive())
 							{
 								game.enemyShipsLeft--;
-								error("You sank the computer's submarine!");
+								ui::dprintWithMap(game, "You sank the computer's submarine!");
 							}
 							break;
 						case SHIP_DESTROYER:
@@ -241,21 +241,21 @@ void GameStateManager::update()
 							if (!game.enemyShips[SHIP_DESTROYER].isAlive())
 							{
 								game.enemyShipsLeft--;
-								error("You sank the computer's destroyer!");
+								ui::dprintWithMap(game, "You sank the computer's destroyer!");
 							}
 							break;
-						default: error("Something went terribly wrong in the enemy ship hit code!"); break;
+						default: ui::dprint("Something went terribly wrong in the enemy ship hit code!"); break;
 					}
 					break;
 				default:
-					error("Something just went terribly wrong! gm.cpp:251");
+					ui::dprint("Something just went terribly wrong! gm.cpp:247");
 					break;
 			}
+			turn = TURN_COMPUTER;
 		}
-		turn = 1;
 	}
 
-	if (turn == 1)
+	if (turn == TURN_COMPUTER)
 	{
 		game.enemyTargetPos = enemyAI.process(game);
 		switch(game.playerShipMap.getNode(game.enemyTargetPos))
@@ -263,7 +263,7 @@ void GameStateManager::update()
 			case STATE_EMPTY:
 				game.playerShipMap.setNode(game.enemyTargetPos, STATE_MISS);
 				game.enemyLastShotHit = false;
-				error("Computer Missed!");
+				ui::dprintWithMap(game, "Computer missed!");
 				break;
 			case STATE_SHIP:
 				game.playerShipMap.setNode(game.enemyTargetPos, STATE_HIT);
@@ -274,7 +274,7 @@ void GameStateManager::update()
 						if (!game.playerShips[SHIP_CARRIER].isAlive())
 						{
 							game.playerShipsLeft--;
-							error("Computer sank your carrier!");
+							ui::dprintWithMap(game, "Computer sank your carrier!");
 						}
 						break;
 					case SHIP_BATTLE:
@@ -282,7 +282,7 @@ void GameStateManager::update()
 						if (!game.playerShips[SHIP_BATTLE].isAlive())
 						{
 							game.playerShipsLeft--;
-							error("Computer sank your battleship!");
+							ui::dprintWithMap(game, "Computer sank your battleship!");
 						}
 						break;
 					case SHIP_CRUISER:
@@ -290,7 +290,7 @@ void GameStateManager::update()
 						if (!game.playerShips[SHIP_CRUISER].isAlive())
 						{
 							game.playerShipsLeft--;
-							error("Computer sank your cruiser!");
+							ui::dprintWithMap(game, "Computer sank your cruiser!");
 						}
 						break;
 					case SHIP_SUBMARINE:
@@ -298,7 +298,7 @@ void GameStateManager::update()
 						if (!game.playerShips[SHIP_SUBMARINE].isAlive())
 						{
 							game.playerShipsLeft--;
-							error("Computer sank your submarine!");
+							ui::dprintWithMap(game, "Computer sank your submarine!");
 						}
 						break;
 					case SHIP_DESTROYER:
@@ -306,22 +306,25 @@ void GameStateManager::update()
 						if (!game.playerShips[SHIP_DESTROYER].isAlive())
 						{
 							game.playerShipsLeft--;
-							error("Computer sank your destroyer!");
+							ui::dprintWithMap(game, "Computer sank your destroyer!");
 						}
 						break;
-					default: error("Something went terribly wrong in the player ship hit code!"); break;
+					default: ui::dprint("Something went terribly wrong in the player ship hit code!"); break;
 
 				}
 				break;
+			case STATE_HIT:
+			case STATE_MISS:
+				ui::dprint("Comp shot at an already selected coord!");
+				break;
 			default:
-				error("Something just went terribly wrong! gm.cpp:317");
-				printf("%d!\n", game.playerShipMap.getNode(game.enemyTargetPos));
+				ui::dprint("Something just went terribly wrong! gm.cpp:317");
 				break;
 		}
-		turn = 0;
+		turn = TURN_PLAYER;
 	}
 
-	if (turn >= 0)
+	if (turn == TURN_PLAYER || turn == TURN_COMPUTER)
 	{
 		if (game.playerShipsLeft <= 0)
 		{
@@ -339,9 +342,9 @@ void GameStateManager::update()
 	/* Reset state variables */
 	playerShipDirection = DIR_NONE;
 	game.playerTargetPos = Vec2(-1, -1);
-	if (statusMsgRedrawOverride)
+	if (keepLastStatus)
 	{
-		statusMsgRedrawOverride = false;
+		keepLastStatus = false;
 	}
 }
 
@@ -361,7 +364,7 @@ void GameStateManager::handleCommand(strVec commandList)
 			game.playerTargetPos = util::parseCoords(commandList[0]);
 			if (game.playerTargetPos.x == -1 || game.playerTargetPos.y == -1)
 			{
-				error("Invalid coordinates!");
+				ui::dprintWithMap(game, "Invalid coordinates!");
 				return;
 			}
 		}
@@ -374,7 +377,7 @@ void GameStateManager::handleCommand(strVec commandList)
 			game.playerTargetPos = util::parseCoords(commandList[0]);
 			if (game.playerTargetPos.x == -1 || game.playerTargetPos.y == -1)
 			{
-				error("Invalid coordinates!");
+				ui::dprintWithMap(game, "Invalid coordinates!");
 				return;
 			}
 
@@ -390,7 +393,7 @@ void GameStateManager::handleCommand(strVec commandList)
 	}
 	else
 	invalidCommand:
-		error("Invalid command!");
+		ui::dprintWithMap(game, "Invalid command!");
 }
 
 void GameStateManager::getInput()
@@ -405,17 +408,6 @@ void GameStateManager::getInput()
 
 		handleCommand(commandList);
 	}
-}
-
-void GameStateManager::print(std::string msg)
-{ // Helper to print info to the status bar
-	statusMsg = msg;
-}
-
-void GameStateManager::error(std::string msg)
-{
-	statusMsgRedrawOverride = true;
-	statusMsg = msg;
 }
 
 ShipType GameStateManager::getHitShip(Team team)
@@ -443,17 +435,3 @@ ShipType GameStateManager::getHitShip(Team team)
 	return SHIP_NULL;
 }
 
-void GameStateManager::test()
-{ // Sets 5,5 to be different states on all 3 maps, then confirms it is indeed that
-	game.playerShipMap.setNode(5,5, STATE_MISS);
-	game.enemyShipMap.setNode(5,5, STATE_HIT);
-	game.playerShotMap.setNode(5,5, STATE_SHIP);
-
-	if (game.playerShipMap.getNode(5,5) == STATE_MISS)
-		puts("Successfully set game.playerShipMap!");
-	if (game.enemyShipMap.getNode(5,5) == STATE_HIT)
-		puts("Successfully set game.enemyShipMap!");
-	if (game.playerShotMap.getNode(5,5) == STATE_SHIP)
-		puts("Successfully set game.playerShotMap!");
-	ui::draw(game.playerShipMap, game.playerShotMap, "AUGH!");
-}

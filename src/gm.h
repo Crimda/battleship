@@ -11,18 +11,13 @@
 #include "ai.h"
 #include "gamestate.h"
 
+
 class GameStateManager
 {
 	private:
 		// Used to manage game state
 		GameState game;
-		/*
-		 * -2: Player ship placement
-		 * -1: Computer ship placement
-		 *  0: Player's turn
-		 *  1: Computer's turn
-		*/
-		int turn = -2;
+		Turn turn = TURN_PLAYERSTART;
 
 		// Used for shutting the game off and displaying end-game messages
 		EndCondition gameEndType = END_QUIT;
@@ -30,7 +25,7 @@ class GameStateManager
 
 		// Used for the status bar
 		std::string statusMsg;
-		bool statusMsgRedrawOverride;
+		bool keepLastStatus = false;
 
 		/* Vars for ship placing */
 		Direction playerShipDirection;
@@ -42,13 +37,9 @@ class GameStateManager
 	public:
 		GameStateManager();
 		~GameStateManager();
-		void test();
 		void main();
 		void update();
 		void getInput();
-
-		void print(std::string msg);
-		void error(std::string msg);
 
 		void handleCommand(strVec commandList);
 		ShipType getHitShip(Team team);

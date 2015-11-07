@@ -3,10 +3,13 @@
 // Allow for windows stupidry
 #ifdef WIN32
 	#define ENDLN "\r\n"
+	#define delay sleep;
 #else
 	#define ENDLN "\n"
+	#define delay usleep;
 #endif
 
+std::string ui::lastMessage = "";
 
 void ui::clear()
 {
@@ -20,7 +23,7 @@ void ui::clear()
 	#endif
 }
 
-void ui::draw(Map playerShipMap, Map playerShotMap, std::string status)
+void ui::drawMap(GameState state)
 {
 	// Clear the screen
 	clear();
@@ -39,17 +42,17 @@ void ui::draw(Map playerShipMap, Map playerShotMap, std::string status)
 
 	printf("%s", ENDLN);
 	
-	for (int y = 0; y < playerShipMap.maxResY; y++)
+	for (int y = 0; y < state.playerShipMap.maxResY; y++)
 	{
 		if (y < 9)
 			printf("%d ", y + 1);
 		else
 			printf("%d", y + 1);
 
-		for (int x = 0; x < playerShipMap.maxResX; x++)
+		for (int x = 0; x < state.playerShipMap.maxResX; x++)
 		{
 			putchar(' ');
-			switch (playerShipMap.getNode(x, y))
+			switch (state.playerShipMap.getNode(x, y))
 			{
 				case STATE_EMPTY:
 					putchar(renderChars[STATE_EMPTY]);
@@ -77,10 +80,10 @@ void ui::draw(Map playerShipMap, Map playerShotMap, std::string status)
 			printf(" %d ", y + 1);
 
 
-		for (int x = 0; x < playerShotMap.maxResX; x++)
+		for (int x = 0; x < state.playerShotMap.maxResX; x++)
 		{
 			putchar(' ');
-			switch (playerShotMap.getNode(x, y))
+			switch (state.playerShotMap.getNode(x, y))
 			{
 				case STATE_EMPTY:
 					putchar(renderChars[STATE_EMPTY]);
@@ -111,10 +114,78 @@ void ui::draw(Map playerShipMap, Map playerShotMap, std::string status)
 	puts("");
 	puts("x  A B C D E F G H I J  |  A B C D E F G H I J  x");
 	puts("=================================================");
-	// Print status
-	printf("%s%s", status.c_str(), ENDLN);
+}
 
+void ui::print(std::string message)
+{
+	lastMessage = message;
+	clear();
+	printf("%s%s", message.c_str(), ENDLN);
+}
+
+void ui::printWithMap(GameState state, std::string message)
+{
+	drawMap(state);
+	printf("%s%s", message.c_str(), ENDLN);
+}
+void ui::prompt(std::string message)
+{
+	print(message); // Clears buffer anyway
 	puts("");
 	printf(">>> ");
+}
+
+void ui::promptWithMap(GameState state, std::string message)
+{
+	lastMessage = message;
+	drawMap(state);
+	printf("%s%s", message.c_str(), ENDLN);
+	puts("");
+	printf(">>> ");
+}
+
+void ui::ddrawMap(GameState state)
+{
+	drawMap(state);
+	fflush(stdout);
+	delay(DELAY);
+}
+
+void ui::dprint(std::string message)
+{
+	print(message);
+	fflush(stdout);
+	delay(DELAY);
+}
+
+void ui::dprintWithMap(GameState state, std::string message)
+{
+	printWithMap(state, message);
+	fflush(stdout);
+	delay(DELAY);
+}
+
+void ui::dprompt(std::string message)
+{
+	prompt(message);
+	fflush(stdout);
+	delay(DELAY);
+}
+
+void ui::dpromptWithMap(GameState state, std::string message)
+{
+	promptWithMap(state, message);
+	fflush(stdout);
+	delay(DELAY);
+}
+
+void ui::promptWithMap(GameState state)
+{
+	promptWithMap(state, lastMessage);
+}
+
+void ui::printWithMap(GameState state)
+{
+	printWithMap(state, lastMessage);
 }
 
