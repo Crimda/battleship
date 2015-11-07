@@ -3,13 +3,16 @@
 // Allow for windows stupidry
 #ifdef WIN32
 	#define ENDLN "\r\n"
-	#define delay sleep;
 #else
 	#define ENDLN "\n"
-	#define delay usleep;
 #endif
 
 std::string ui::lastMessage = "";
+
+void ui::delay(int ms)
+{
+	std::this_thread::sleep_for(std::chrono::milliseconds(ms));
+}
 
 void ui::clear()
 {
@@ -114,6 +117,8 @@ void ui::drawMap(GameState state)
 	puts("");
 	puts("x  A B C D E F G H I J  |  A B C D E F G H I J  x");
 	puts("=================================================");
+
+	fflush(stdout);
 }
 
 void ui::print(std::string message)
@@ -121,18 +126,22 @@ void ui::print(std::string message)
 	lastMessage = message;
 	clear();
 	printf("%s%s", message.c_str(), ENDLN);
+	fflush(stdout);
 }
 
 void ui::printWithMap(GameState state, std::string message)
 {
 	drawMap(state);
 	printf("%s%s", message.c_str(), ENDLN);
+	fflush(stdout);
 }
+
 void ui::prompt(std::string message)
 {
 	print(message); // Clears buffer anyway
 	puts("");
 	printf(">>> ");
+	fflush(stdout);
 }
 
 void ui::promptWithMap(GameState state, std::string message)
@@ -142,6 +151,7 @@ void ui::promptWithMap(GameState state, std::string message)
 	printf("%s%s", message.c_str(), ENDLN);
 	puts("");
 	printf(">>> ");
+	fflush(stdout);
 }
 
 void ui::ddrawMap(GameState state)
@@ -188,4 +198,3 @@ void ui::printWithMap(GameState state)
 {
 	printWithMap(state, lastMessage);
 }
-

@@ -2,6 +2,7 @@
 #define GAMESTATEMANAGER
 #include <iostream>
 #include <string>
+#include <limits.h>
 
 #include "types.h"
 #include "ship.h"

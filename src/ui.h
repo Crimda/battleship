@@ -3,13 +3,10 @@
 #include <string>
 #include <stdlib.h>
 
-#ifdef WIN32
-	#include <windows>
-	#define DELAY 1500 // about 1.5 seconds iirc
-#else
-	#include <unistd.h>
-	#define DELAY 1500000 // about 1.5 seconds afaik
-#endif
+#include <chrono>
+#include <thread>
+
+#define DELAY 2500 // 1.5 seconds iirc
 
 #include "types.h"
 #include "map.h"
@@ -18,7 +15,6 @@
 
 namespace ui
 {
-	extern std::string lastMessage;
 	void drawMap(GameState state); // Just draw map
 	void prompt(std::string message); // Just draw a prompt
 	void promptWithMap(GameState state, std::string message); // Draw everything
@@ -37,8 +33,12 @@ namespace ui
 	void promptWithMap(GameState state);
 	void printWithMap(GameState state);
 
-	// Refresh
+	// Buffer for the last two functions
+	extern std::string lastMessage;
+
+	// Utility functions
 	void clear();
+	void delay(int ms);
 }
 
 #endif

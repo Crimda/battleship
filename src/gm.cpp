@@ -23,7 +23,7 @@ void GameStateManager::main()
 	while (!endGame)
 	{
 		update();
-		ui::promptWithMap(game);
+//		ui::promptWithMap(game);
 		getInput();
 	}
 	
@@ -322,6 +322,7 @@ void GameStateManager::update()
 				break;
 		}
 		turn = TURN_PLAYER;
+		ui::promptWithMap(game, "Player's turn! Enter coords for attack or a command!");
 	}
 
 	if (turn == TURN_PLAYER || turn == TURN_COMPUTER)
@@ -400,6 +401,7 @@ void GameStateManager::getInput()
 {
 	if (!endGame && turn != 1)
 	{
+
 		std::string rawCommand;
 		std::getline(std::cin, rawCommand);
 
