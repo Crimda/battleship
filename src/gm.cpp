@@ -401,7 +401,6 @@ void GameStateManager::getInput()
 {
 	if (!endGame && turn != 1)
 	{
-
 		std::string rawCommand;
 		std::getline(std::cin, rawCommand);
 
