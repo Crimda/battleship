@@ -69,5 +69,7 @@ typedef enum
 	TURN_COMPUTER
 } Turn;
 
+int getRandInt(int max, int min = 0);
+
 #endif
 

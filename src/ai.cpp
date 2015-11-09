@@ -6,6 +6,34 @@ SimpleAI::SimpleAI()
 SimpleAI::~SimpleAI()
 {}
 
+
+
+Placement SimpleAI::placeShip()
+{ // Brute-force ship placement method meant to be called from a loop
+	Placement result;
+
+	result.pos.reseed();
+	result.pos.randomize();
+	int choice = getRandInt(4);
+	switch (choice)
+	{ // Randomly select a direction
+		case 0:
+			result.dir = DIR_NORTH;
+			break;
+		case 1:
+			result.dir = DIR_EAST;
+			break;
+		case 2:
+			result.dir = DIR_SOUTH;
+			break;
+		case 3:
+			result.dir = DIR_WEST;
+			break;
+	}
+	return result;
+}
+	
+
 void SimpleAI::addHistory(Vec2 pos)
 { // Helper function, append shot history
 	shotHistory.push_back(pos);

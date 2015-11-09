@@ -118,23 +118,27 @@ void GameStateManager::update()
 
 	if (turn == TURN_COMPUTERSTART)
 	{
-		ui::printWithMap(game, "Computer placing ships, please wait...");
+		ui::printWithMap(game, "Computer placing ships, please wait, this may take some time...");
 		for (int i = 0; i <= 5; i++)
 		{
 		switch (game.enemyShipsLeft)
 		{
 			case SHIP_CARRIER:
 			{
-				Ship ship = game.enemyShipMap.addShip(Vec2(9, 9), DIR_WEST, SHIP_CARRIER);
-				if (ship.isValid())
+				Ship ship = Ship();
+				while (!ship.isValid())
 				{
-					game.enemyShips[SHIP_CARRIER] = ship;
-					game.enemyShipsLeft++;
+					Placement placement = enemyAI.placeShip();
+					ship = game.enemyShipMap.addShip(placement.pos, placement.dir, SHIP_CARRIER);
 				}
+				ui::dprintWithMap(game, "Carrier placed.");
+				game.enemyShips[SHIP_CARRIER] = ship;
+				game.enemyShipsLeft++;
 				break;
 			}
 			case SHIP_BATTLE:
 			{
+				/*
 				Ship ship = game.enemyShipMap.addShip(Vec2(9, 8), DIR_WEST, SHIP_BATTLE);
 				if (ship.isValid())
 				{
@@ -142,9 +146,21 @@ void GameStateManager::update()
 					game.enemyShipsLeft++;
 				}
 				break;
+				*/
+				Ship ship = Ship();
+				while (!ship.isValid())
+				{
+					Placement placement = enemyAI.placeShip();
+					ship = game.enemyShipMap.addShip(placement.pos, placement.dir, SHIP_BATTLE);
+				}
+				ui::dprintWithMap(game, "Battleship placed.");
+				game.enemyShips[SHIP_BATTLE] = ship;
+				game.enemyShipsLeft++;
+				break;
 			}
 			case SHIP_CRUISER:
 			{
+				/*
 				Ship ship = game.enemyShipMap.addShip(Vec2(9, 7), DIR_WEST, SHIP_CRUISER);
 				if (ship.isValid())
 				{
@@ -152,9 +168,21 @@ void GameStateManager::update()
 					game.enemyShipsLeft++;
 				}
 				break;
+				*/
+				Ship ship = Ship();
+				while (!ship.isValid())
+				{
+					Placement placement = enemyAI.placeShip();
+					ship = game.enemyShipMap.addShip(placement.pos, placement.dir, SHIP_CRUISER);
+				}
+				ui::dprintWithMap(game, "Cruiser placed.");
+				game.enemyShips[SHIP_CRUISER] = ship;
+				game.enemyShipsLeft++;
+				break;
 			}
 			case SHIP_SUBMARINE:
 			{
+				/*
 				Ship ship = game.enemyShipMap.addShip(Vec2(9, 6), DIR_WEST, SHIP_SUBMARINE);
 				if (ship.isValid())
 				{
@@ -162,9 +190,21 @@ void GameStateManager::update()
 					game.enemyShipsLeft++;
 				}
 				break;
+				*/
+				Ship ship = Ship();
+				while (!ship.isValid())
+				{
+					Placement placement = enemyAI.placeShip();
+					ship = game.enemyShipMap.addShip(placement.pos, placement.dir, SHIP_SUBMARINE);
+				}
+				ui::dprintWithMap(game, "Submarine placed.");
+				game.enemyShips[SHIP_SUBMARINE] = ship;
+				game.enemyShipsLeft++;
+				break;
 			}
 			case SHIP_DESTROYER:
 			{
+				/*
 				Ship ship = game.enemyShipMap.addShip(Vec2(9, 5), DIR_WEST, SHIP_DESTROYER);
 				if (ship.isValid())
 				{
@@ -172,6 +212,18 @@ void GameStateManager::update()
 					game.enemyShipsLeft++;
 					turn = TURN_PLAYER;
 				}
+				break;
+				*/
+				Ship ship = Ship();
+				while (!ship.isValid())
+				{
+					Placement placement = enemyAI.placeShip();
+					ship = game.enemyShipMap.addShip(placement.pos, placement.dir, SHIP_DESTROYER);
+				}
+				ui::dprintWithMap(game, "Destroyer placed.");
+				game.enemyShips[SHIP_DESTROYER] = ship;
+				game.enemyShipsLeft++;
+				turn = TURN_PLAYER;
 				break;
 			}
 		}

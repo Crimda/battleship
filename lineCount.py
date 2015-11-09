@@ -14,7 +14,9 @@ files = [
 	"src/ui.h",
 	"src/util.cpp",
 	"src/util.h",
-	"lineCount.py"
+	"src/ai.cpp",
+	"src/ai.h",
+	"src/gamestate.h"
 ]
 
 lineCount = 0

@@ -84,9 +84,11 @@ void ui::drawMap(GameState state)
 
 
 		for (int x = 0; x < state.playerShotMap.maxResX; x++)
+//		for (int x = 0; x < state.enemyShipMap.maxResX; x++) // DEBUG: draws enemy ship map
 		{
 			putchar(' ');
 			switch (state.playerShotMap.getNode(x, y))
+//			switch (state.enemyShipMap.getNode(x, y)) // DEBUG: draws enemy ship map
 			{
 				case STATE_EMPTY:
 					putchar(renderChars[STATE_EMPTY]);

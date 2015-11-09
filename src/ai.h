@@ -17,6 +17,12 @@ typedef enum
 	LOGIC_DESTROY
 } AIState;
 
+typedef struct
+{
+	Vec2 pos;
+	Direction dir;
+} Placement;
+
 class SimpleAI
 {
 	private:
@@ -33,5 +39,8 @@ class SimpleAI
 		SimpleAI();
 		~SimpleAI();
 		Vec2 process(GameState state);
+		Placement placeShip();
+
 };
+
 #endif

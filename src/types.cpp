@@ -27,3 +27,10 @@ void Vec2::randomize()
 
 Vec2::Vec2()
 {}
+
+int getRandInt(int max, int min)
+{
+	srand(time(NULL));
+	return rand() % max - min;
+}
+
